@@ -30,9 +30,7 @@ class Huffman{
 
 
         }
-//        int n=6;
-//        char[] charArray= { 'a', 'b', 'c', 'd', 'e', 'f' };
-//        double[] probability={0.22 , 0.11 , 0.22 , 0.11 , 0.22 , 0.11};
+
 
         PriorityQueue<HuffmanNode> pq= new PriorityQueue<>(Comparator.comparingDouble(node ->node.probabilityData));
 
@@ -45,27 +43,14 @@ class Huffman{
 
             pq.add(huffmanNode);
         }
-//        for(int i=0;i<n;i++) {
-//            HuffmanNode huffmanNode = new HuffmanNode(charArray[i], probability[i], null, null);
-//            pq.add(huffmanNode);
-//        }
-//        System.out.println("PriorityQueue contents:");
-//        for (HuffmanNode node : pq) {
-//            while(!pq.isEmpty()){
-//                System.out.println(pq.poll());
-//            }
-//        }
+
 
         HuffmanNode root=null;
         while(pq.size() > 1){
             HuffmanNode left=pq.poll();
             HuffmanNode right=pq.poll();
 
-//            if(right==null){
-//                newProbability= left.probabilityData;
-//            }else{
-//                newProbability= left.probabilityData+ right.probabilityData;
-//            }
+
             int newProbability= left.probabilityData+ right.probabilityData;
             HuffmanNode huffmanNode=new HuffmanNode(' ',  newProbability, left,right);
             pq.add(huffmanNode);
@@ -82,7 +67,7 @@ class Huffman{
         FinalcodeMap.forEach((key, value) -> System.out.println(key + " : " + value));
 
         //write the table of huffman generated codes in a file (table) to be used in decompression
-        String TableCodesfilePath = "E:\\Year 3\\Data Compression\\Huffman\\table.txt";
+        String TableCodesfilePath = "table.txt";
         try(BufferedWriter writer=new BufferedWriter(new FileWriter(TableCodesfilePath))){
             for (Map.Entry<Character,String> entry : FinalcodeMap.entrySet()){
                 writer.write(entry.getKey()+" : ");
@@ -116,7 +101,7 @@ class Huffman{
         generateHuffmanCodes(root.right, s + "1", FinalcodeMap);
     }
 
-    public static void saveCompressedData(String encodedString, String filePath) {
+    public static void saveCompressedData(String encodedString, String filePath) {//if you want to save the data in a binary file
         try (FileOutputStream fos = new FileOutputStream(filePath)) {
             int byteValue = 0;
             int bitCount = 0;
@@ -161,13 +146,11 @@ class Huffman{
 
         }
         reader.close();
-//        tablecodingmap.forEach((key,value)-> System.out.println("key: "+key + " value: "+value));
         StringBuilder temporary= new StringBuilder();
         StringBuilder decodedString=new StringBuilder();
 
         for(char ch: encodedString.toCharArray()) {
             temporary.append(ch);
-//            System.out.println("temporary " + temporary);
             if (tablecodingmap.containsValue(temporary.toString())) {
                 for (Map.Entry<Character, String> entry : tablecodingmap.entrySet()) {
                     if (Objects.equals(entry.getValue(), temporary.toString())) {
@@ -182,7 +165,7 @@ class Huffman{
         }
         System.out.println("decodedString "+decodedString);
 
-        String decompressedOutputPath= "E:\\Year 3\\Data Compression\\Huffman\\decompressedOutput.txt";
+        String decompressedOutputPath= "decompressedOutput.txt";
         String decompressedOutput=decodedString.toString();
         try(BufferedWriter writer=new BufferedWriter(new FileWriter(decompressedOutputPath))){
             for (char c: decompressedOutput.toCharArray()){
@@ -199,7 +182,7 @@ class Huffman{
 
 
     public static void main(String[] args) throws IOException {
-        String filePath ="E:\\Year 3\\Data Compression\\Huffman\\input.txt";
+        String filePath ="input.txt";
         File file = new File(filePath);
         if (!file.exists()) {
             System.out.println("File not found: " + filePath);
